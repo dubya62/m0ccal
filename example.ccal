@@ -1,0 +1,30 @@
+
+
+class Test:
+/*
+    An example class
+*/
+    "A testing 'string \\ with \nmultiple lines "
+
+
+    
+    init(val=2):
+        let result = testing() + val
+
+        ~: // assume that result can only possibly be greater than 0
+            result > 0
+
+        *: // if it is possible for result to be less than 1, throw an error
+            result < 1
+
+
+    uninit:
+        pass
+
+    testing private function () -> Int:
+        return 2
+
+
+
+if @Z:
+    let x = Test()

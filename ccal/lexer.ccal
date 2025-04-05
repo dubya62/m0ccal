@@ -1,0 +1,53 @@
+
+class Lexer:
+    & "Usage":
+        The purpose of this class is to allow 
+        lexing of m0ccal files.
+        Given a filename, it shoudl break the file up into tokens
+
+    init(String filename):
+        |:
+            expect @F("test.ccal") == ["asdf", "hijk"]
+
+        let this.filename = filename
+
+        lex(filename)
+
+    lex private function(String filename) -> List[String]:
+        let data = openFile(filename)
+        let tokens = breakIntoTokens(data)
+        return tokens
+
+    openFile private function (String filename) -> String:
+        let file = open(filename, 'r')
+        if file == NULL:
+            print("Could not open file...")
+            exit()
+        return file.read()
+
+    breakIntoTokens private function(String data) -> List[String]:
+        |:
+            expect @F("hello, world") == ["hello", ",", " ", "world"]
+
+        let break_chars = {
+                "~", "!", "@", "#", "%", "^", "$", "^", "&", "*", "(", ")", "-", "+", "=", "[", "]", "{", "}", "|", "<", ">", ",", ".", "/", "?", ":", " ", "\n", "\t", "'", '"', ";", "\\"
+            }
+
+        let result = []
+        let current = ""
+
+        for dat in data:
+            if dat in break_chars:
+                if current.length:
+                    result.append(current)
+                current = ""
+                result.append(dat)
+            else:
+                current += dat
+            i++
+
+        current.length:
+            result.append(current)
+
+        return result
+

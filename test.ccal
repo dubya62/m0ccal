@@ -1,0 +1,109 @@
+
+
+/*
+C: 
+    C code that get directly injected to output
+
+if:
+    Normal if statement
+
+elif:
+    Normal elif statement
+
+else:
+    Normal else statement
+
+|:
+    Test case
+
+:() 
+    Gets replaced by the function you are currently in
+
+&:
+    Documentation Block
+
+
+
+
+
+*/
+
+
+C {
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    typedef struct File{
+        File* fp;
+        int offset;
+    } File;
+
+    File* constructFile(String* filename){
+        FILE* fp = fopen(filename, 'r');
+        File* result = malloc(sizeof(File));
+        result->fp = fp;
+        return result;
+    }
+    int destructFile(File* instance){
+        free(instance);
+        return;
+    }
+
+}
+
+class File:
+    constructFile private api (String filename) -> File
+
+
+class Test extends File:
+
+    let STATICVAR = 2
+
+    __init__ public ():
+        pass
+
+    __uninit__ public ():
+        pass
+
+
+    + public reversible unary postfix operator 2 (int first, int second) -> int:
+
+        if first < 2:
+            pass
+
+    testFunc public function (refof int first=2) -> int:
+        | "First Test" -> "Passed" "Failed":
+            :(2, 3) == 1
+        | -> "Passed" "Uh oh":
+            :(7, 5)
+        | -> _ "Uh oh":
+            :(4, 5) > 0
+        |:
+            :(2, 1)
+
+        &:
+            This is a documentation block.
+            It shows you how to use the function.
+
+
+        for x in range(first):
+            first++
+
+        // increments the passed value of first
+        first++
+        return first + 2
+
+
+    testFunc private function (Int first=2, String second) -> String:
+        return second * first
+
+
+    readFile public function (String filename) -> String {
+        fp = openFile(filename)
+        result = fp.read()
+        return result
+    }
+            
+
+
+
