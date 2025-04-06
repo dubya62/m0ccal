@@ -10,6 +10,8 @@ Important functionality:
     Memory Manager
         Handle the memory space
     Dynamic Arrays
+        Allow appending more items
+        Only allow a single type of item
     Classes/Objects
     Int, Float, String, and Dictionary
 */
@@ -96,6 +98,8 @@ void* $_MemoryManager_requestFakeBlock($_MemoryManager* instance, size_t realByt
 
     return NULL;
 }
+
+
 
 
 // TEST CODE 

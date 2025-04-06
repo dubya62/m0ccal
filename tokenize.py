@@ -6,6 +6,11 @@ class Token:
         self.filename = ""
         self.line_number = 0
 
+    def fatal_error(self, message):
+        print(f"FATAL ERROR at {self.filename}:{self.line_number}")
+        print(f"\t{message}")
+        exit(1)
+
     def __hash__(self):
         return self.token.__hash__()
     def __getitem__(self, index):
@@ -17,17 +22,57 @@ class Token:
     def __len__(self):
         return len(self.token)
     def __eq__(self, other):
-        return self.token == other
+        return self.token == str(other)
     def __contains__(self, item):
         return item in self.token
     def __ne__(self, other):
-        return self.token != other
+        return self.token != str(other)
 
 
 
 class Tokens:
     def __init__(self, tokens:list[Token]=[]):
         self.tokens = tokens
+
+    def get_match_index(self, start_index, closer:str) -> int:
+        opened = 0
+        i = start_index
+        while i < len(self.tokens):
+            if self.tokens[i] == self.tokens[start_index]:
+                opened += 1
+            elif self.tokens[i] == closer:
+                opened -= 1
+                if opened == 0:
+                    return i
+            i += 1
+
+
+    def get_match_content(self, start_index:int, closer:str) -> 'Tokens':
+        end_index = self.get_match_index(start_index, closer)
+        if end_index is None:
+            return None
+
+        result = Tokens(self.tokens[start_index:end_index+1])
+        self.tokens = self.tokens[:start_index] + self.tokens[end_index+1:]
+
+        return result
+
+
+    def get_line_start(self, index):
+        while index > 0:
+            if self.tokens[index] == ";":
+                return index
+            index -= 1
+        return index
+    
+
+    def get_line_end(self, index):
+        while index < len(self.tokens):
+            if self.tokens[index] == ";":
+                return index
+            index += 1
+        return index
+
 
     def __getitem__(self, index):
         return self.tokens[index]

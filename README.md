@@ -140,11 +140,29 @@ return
 
 ## Preprocessor
 * Allow strong definition stuff like C does
+* import statements
+    * User imports
+    * System imports
+* definitions
+    * define
+        * normal define
+    * macro
+        * function-like define
+    * undef
+    * ifdef
+    * ifndef
+    * if, elif, else, endif
+        * defined() or defined 
+    * error
+    * warn
+    
 
 
 ## Idea
 * Make the language extremely simple
 * The complexity should be defined explicitly in the standard libraries
+* Allow making a function be forced (it must execute even if the output is never used)
+    * If there is only 1 possible value and nothing is forced in a section of the program, just assume that is the value
 
 
 ## Process

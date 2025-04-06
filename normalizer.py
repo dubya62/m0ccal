@@ -17,7 +17,7 @@ def normalize(tokens:list[str], filename:str):
 
     # TODO: combine new operator definitions to single tokens
 
-    # TODO: combine Int, String, and Float literals into single tokens
+    # TODO: combine @directives, Int, String, and Float literals into single tokens
 
     # convert tabs to spaces
     tokens = convert_tabs(tokens)
@@ -148,6 +148,12 @@ def convert_newlines(tokens:list[str]):
                 tokens[i].number_of_spaces += 1
                 del tokens[i+1]
                 n -= 1
+            if i > 0 and tokens[i-1] == "\\":
+                del tokens[i-1]
+                del tokens[i-1]
+                i -= 2
+                n -= 2
+
         i += 1
 
     return tokens
@@ -176,10 +182,11 @@ def convert_indention_syntax(tokens:list[str]):
                     # if a shorter nonzero indent is found, end the braces
                     if tokens[j] == "#INDENTION":
                         if tokens[j].number_of_spaces < indent_level and not (j + 1 < n and tokens[j+1] == "#INDENTION"):
-                            tokens.insert(j, "}")
-                            n += 1
+
                             break
                     j += 1
+                tokens.insert(j, "}")
+                n += 1
         i += 1
 
     return tokens

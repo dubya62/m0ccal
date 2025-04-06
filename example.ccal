@@ -1,4 +1,15 @@
 
+#import testing as test, testing2 as test2 from test.ccal
+
+#define DEBUG \
+    1
+#macro TESTMACRO(a, b) a##b
+    
+pattern(n):
+    match 1:
+        1
+    match x:
+        pattern(x-1) * x
 
 class Test:
 /*
@@ -17,9 +28,12 @@ class Test:
         *: // if it is possible for result to be less than 1, throw an error
             result < 1
 
-
     uninit:
         pass
+
+
+    + reversible binary operator(other):
+        return first + second
 
     testing private function () -> Int:
         return 2

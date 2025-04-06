@@ -1,0 +1,36 @@
+
+C:
+    #include <stdio.h>
+    
+    typedef struct STDIO{
+        int in;
+        int out;
+    } STDIO;
+
+    int println(String* message){
+        printf("%s\n", message.value);
+    }
+
+
+
+class STDIO:
+
+    println public api(String message) -> Int:
+        // if the length of the message string can be 0 or less,
+        // throw an error
+        *: 
+            message.length > 0
+
+        result = API(message)
+
+        for x in 0..10:2:
+            pass
+
+        // assume that result will always be either 0 or 1
+        ~:
+            result in 0..2
+
+        return result
+
+            
+    

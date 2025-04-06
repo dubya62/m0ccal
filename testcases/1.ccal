@@ -1,0 +1,24 @@
+
+
+Test public class:
+    init:
+        let this.value = 2
+
+    toString public:
+        let example = 3;
+            let example2 = 4;
+        return f"{this.value}"
+
+
+if @G:
+    let test = Test()
+    println(
+        test.toString()
+        )
+
+    let test2 = {
+        2 => "Hello",
+        "hi" => 3
+    }
+
+
