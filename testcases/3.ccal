@@ -1,0 +1,14 @@
+
+#import 4
+
+Test1 class:
+
+    init:
+        pass
+
+    uninit:
+        pass
+
+    testFunc function(String inputString):
+        pass
+

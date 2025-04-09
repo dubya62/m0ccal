@@ -1,0 +1,34 @@
+
+use ext as extends Object, Test;
+&:
+    Example documentation block
+
+    right here
+        pretty cool.
+
+
+Test protected class:
+    init:
+        let special = 2;
+
+    &:
+        This is documentation within a class
+
+
+Test2 class ext:
+    init:
+        super(Test).init()
+
+    uninit:
+        pass
+
+    testFunc private function (String input, Int testInput) -> Int:
+        pass
+
+    pattern(x):
+        pass
+
+    anotherTestFunc private function -> Test (String testString):
+        pass
+
+

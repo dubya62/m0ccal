@@ -19,4 +19,15 @@
 * Otherwise, always use a reference
 
 
+## Possible class blocks
+```
+Test private class extends Test2, Test3
+Test public class
+Test protected class
+Test class
+```
+* Class name
+* optional access specifier
+* class
+* optional extends followed by class names
 

@@ -1,12 +1,15 @@
 
-class Lexer:
-    & "Usage":
+Lexer public class extends Lex:
+    & "Usage" &:
         The purpose of this class is to allow 
         lexing of m0ccal files.
         Given a filename, it shoudl break the file up into tokens
 
+    let STATIC_VAR = private function (Int test):
+    pass
+
     init(String filename):
-        |:
+        "Testcase 1" |:
             expect @F("test.ccal") == ["asdf", "hijk"]
 
         let this.filename = filename
@@ -24,6 +27,7 @@ class Lexer:
             print("Could not open file...")
             exit()
         return file.read()
+
 
     breakIntoTokens private function(String data) -> List[String]:
         |:

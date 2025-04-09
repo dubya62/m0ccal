@@ -6,18 +6,21 @@
 #macro TESTMACRO(a, b) a##b
     
 pattern(n):
-    match 1:
-        1
-    match x:
-        pattern(x-1) * x
+    match (1):
+        return 1
+    match (x):
+        return @F(x-1) * x
 
-class Test:
+Test2 public class:
+    pass
+
+Test3 class{
+}
+
+Test private class extends Test2:
 /*
     An example class
 */
-    "A testing 'string \\ with \nmultiple lines "
-
-
     
     init(val=2):
         let result = testing() + val
@@ -32,8 +35,8 @@ class Test:
         pass
 
 
-    + reversible binary operator(other):
-        return first + second
+    "+" public operator("binary", "right", "postfix", 2, Object other):
+        return first + other.value
 
     testing private function () -> Int:
         return 2

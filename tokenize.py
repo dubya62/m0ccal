@@ -73,6 +73,18 @@ class Tokens:
             index += 1
         return index
 
+    def get_scope_end(self, index):
+        stack = 0
+        while index < len(self.tokens):
+            if self.tokens[index] == "{":
+                stack += 1
+            elif self.tokens[index] == "}":
+                if stack == 0:
+                    return index
+                stack -= 1
+            index += 1
+        return len(self.tokens) - 1
+
 
     def __getitem__(self, index):
         return self.tokens[index]

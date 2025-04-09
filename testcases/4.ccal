@@ -1,0 +1,4 @@
+
+Test2 class extends Test:
+    init:
+        let example = 2;

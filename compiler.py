@@ -6,7 +6,6 @@ import normalizer
 import blocker
 import preprocessor
 import converter
-import reorderer
 
 if __name__ == "__main__":
     FILENAME = sys.argv[1]
@@ -32,30 +31,17 @@ if __name__ == "__main__":
     # handle preprocessor directives
     print("++++++++++++++++++++++++++++++")
     print("Preprocessing...")
-    tokens = preprocessor.preprocess(tokens)
+    tokens = preprocessor.preprocess(tokens, FILENAME)
     print(tokens)
 
-    # convert classes to special objects
-    # convert functions to special objects
+
+    # Convert operator definitions and usages to function calls
+    # Handle APIs to C code
+    # Handle Functions
     print("++++++++++++++++++++++++++++++")
     print("Converting...")
     tokens = converter.convert(tokens)
     print(tokens)
-
-
-    """
-    # Reorder the execution trace to what will actually happen
-    print("++++++++++++++++++++++++++++++")
-    print("Reordering...")
-    tokens = reorderer.reorder(tokens)
-    print(tokens)
-    """
-
-    # Convert operator definitions and usages to function calls
-
-    # Handle APIs to C code
-
-    # Handle Functions
 
     # Handle access specifiers and syntax errors
 

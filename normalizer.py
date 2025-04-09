@@ -15,8 +15,6 @@ def normalize(tokens:list[str], filename:str):
     # remove comments
     tokens = remove_comments(tokens)
 
-    # TODO: combine new operator definitions to single tokens
-
     # TODO: combine @directives, Int, String, and Float literals into single tokens
 
     # convert tabs to spaces
@@ -24,6 +22,9 @@ def normalize(tokens:list[str], filename:str):
 
     # convert newlines to line indents
     tokens = convert_newlines(tokens)
+
+    # remove extra indents (indents with nothing on the line)
+    tokens = remove_extra_indents(tokens)
 
     # convert indention syntax to braces
     tokens = convert_indention_syntax(tokens)
@@ -36,6 +37,7 @@ def normalize(tokens:list[str], filename:str):
 
     # remove whitespace
     tokens = remove_whitespace(tokens)
+
 
     # put semicolons around all statements
     tokens = normalize_semicolons(tokens)
@@ -143,6 +145,13 @@ def convert_newlines(tokens:list[str]):
     n = len(tokens)
     while i < n:
         if tokens[i] == "\n":
+
+            # remove whitespace before \n to make \ work at end of line
+            while i > 0 and tokens[i-1] == " ":
+                del tokens[i-1]
+                i -= 1
+                n -= 1
+
             tokens[i] = Indention(0)
             while i + 1 < n and tokens[i+1] == " ":
                 tokens[i].number_of_spaces += 1
@@ -159,19 +168,48 @@ def convert_newlines(tokens:list[str]):
     return tokens
 
 
+def remove_extra_indents(tokens:list[str]):
+    i = 0
+    n = len(tokens)
+    while i + 1 < n:
+        if tokens[i] == "#INDENTION" and tokens[i+1] == "#INDENTION":
+            del tokens[i]
+            n -= 1
+            continue
+        i += 1
+    return tokens
+
+
+
 def convert_indention_syntax(tokens:list[str]):
     # any time there is : followed by an indention,
     # anything else at that same indention level is 
     # encapsulated with {}
     i = 0
     n = len(tokens)
+    print(tokens)
     while i < n:
         if tokens[i] == ":":
             while i + 1 < n and tokens[i+1] == " ":
                 del tokens[i+1]
                 n -= 1
             if i + 1 < n and tokens[i+1] == "#INDENTION":
+                j = i
+                my_indent = Indention(0)
+                while j >= 0:
+                    if tokens[j] == "#INDENTION":
+                        my_indent = tokens[j]
+                        break
+                    j -= 1
+
                 indent_level = tokens[i+1].number_of_spaces
+                
+                if my_indent.number_of_spaces >= indent_level:
+                    # TODO: make this error message more helpful
+                    print(f"Expected indented block: {my_indent.number_of_spaces}, {indent_level}")
+                    exit(1)
+
+
                 # remove : and replace INDENTION with {
                 del tokens[i]
                 tokens[i] = "{"
