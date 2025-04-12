@@ -7,6 +7,7 @@ import blocker
 import preprocessor
 import converter
 import syntax_checker
+import constrainer
 
 if __name__ == "__main__":
     FILENAME = sys.argv[1]
@@ -45,11 +46,16 @@ if __name__ == "__main__":
 
     # Handle access specifiers and syntax errors
     print("++++++++++++++++++++++++++++++")
-    print("Checking syntax")
+    print("Checking syntax...")
     tokens = syntax_checker.check_syntax(tokens)
     print(tokens)
 
     # Run through the program and find all possible values of variables at each location in the program (handle constraints and assumes)
+    print("++++++++++++++++++++++++++++++")
+    print("Checking constraints...")
+    tokens = constrainer.constrain(tokens)
+    print(tokens)
+
     
     # Figure out how the program will be laid out in memeory
 

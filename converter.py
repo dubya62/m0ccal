@@ -64,7 +64,7 @@ def convert(tokens:Tokens):
     tokens = convert_functions(tokens)
 
     # convert operator usage to function calls
-    tokens = convert_operators()
+    tokens = convert_operators(tokens)
 
     # TODO: convert patterns to special objects
 
@@ -97,6 +97,7 @@ def convert_classes(tokens:Tokens):
             
             del block.args[0]
             extensions = []
+            # TODO: instead of expecting exactly one token, get everything between commas
             if len(block.args) > 0:
                 if block.args[0] != "extends":
                     block.args[0].fatal_error("Expected extends or :")

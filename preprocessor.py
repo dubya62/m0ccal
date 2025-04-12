@@ -7,7 +7,6 @@ import normalizer
 import blocker
 
 
-# TODO: make imports create sorrounding classes
 
 
 def preprocess(tokens:tokenize.Tokens, start_path, already_included=set()):
@@ -62,13 +61,16 @@ def handle_import(tokens:tokenize.Tokens, start_path, already_included):
         tokens[0].fatal_error("Invalid import directive")
 
     filename = tokens[2:]
+    original_filename = [x for x in filename]
     
     # go up parent directories for each .
+    dots = 0
     filepath = os.path.dirname(start_path)
     filepath = os.path.abspath(filepath)
     while len(filename) > 0:
         if filename[0] == ".":
             filepath = os.path.dirname(filepath)
+            dots += 1
         else:
             break
         del filename[0]
@@ -113,6 +115,11 @@ def handle_import(tokens:tokenize.Tokens, start_path, already_included):
             if os.path.isfile(x):
                 result.tokens += get_file_contents(x, already_included).tokens
             
+    # make imports create sorrounding classes
+    while len(original_filename) > 0:
+        result.tokens = [blocker.Block(original_filename[0], tokenize.Tokens([tokenize.Token("protected"), tokenize.Token("class")]), result.tokens)]
+        del original_filename[0]
+
     return result
 
 
@@ -134,6 +141,8 @@ def get_file_contents(filepath, already_included):
     child_included.add(filepath)
 
     result = preprocess(result, filepath, child_included)
+
+
 
     return result
 
