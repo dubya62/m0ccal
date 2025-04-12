@@ -1,14 +1,18 @@
 
-#import 4
 
 Test1 class:
 
     init:
-        pass
+        let this.value = 2
 
     uninit:
         pass
 
+
     testFunc function(String inputString):
         pass
+
+
+    __add__ public function(Object other) -> Test1:
+        return this.value + other.value
 

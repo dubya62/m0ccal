@@ -6,6 +6,7 @@ import normalizer
 import blocker
 import preprocessor
 import converter
+import syntax_checker
 
 if __name__ == "__main__":
     FILENAME = sys.argv[1]
@@ -34,7 +35,6 @@ if __name__ == "__main__":
     tokens = preprocessor.preprocess(tokens, FILENAME)
     print(tokens)
 
-
     # Convert operator definitions and usages to function calls
     # Handle APIs to C code
     # Handle Functions
@@ -44,6 +44,10 @@ if __name__ == "__main__":
     print(tokens)
 
     # Handle access specifiers and syntax errors
+    print("++++++++++++++++++++++++++++++")
+    print("Checking syntax")
+    tokens = syntax_checker.check_syntax(tokens)
+    print(tokens)
 
     # Run through the program and find all possible values of variables at each location in the program (handle constraints and assumes)
     

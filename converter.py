@@ -4,6 +4,7 @@ from tokenize import Token, Tokens
 
 
 
+
 class ClassBlock(blocker.Block):
     """
     class_name = ""
@@ -19,6 +20,8 @@ class ClassBlock(blocker.Block):
         self.is_api = is_api
         self.extends = extends
         self.access = access
+
+        self.operators = []
 
     def __repr__(self):
         return f"{self.access} class {self.name} extends {self.extends}: {self.content} ENDBLOCK {self.name}"
@@ -60,9 +63,10 @@ def convert(tokens:Tokens):
     # convert functions to special objects
     tokens = convert_functions(tokens)
 
-    # convert operators to functions and usages to function calls
+    # convert operator usage to function calls
+    tokens = convert_operators()
 
-    # convert patterns to special objects
+    # TODO: convert patterns to special objects
 
     return tokens
 
@@ -108,7 +112,6 @@ def convert_classes(tokens:Tokens):
                     extensions.append(block.args[0])
                     del block.args[0]
                     del block.args[0]
-
 
 
             # convert to special Block
@@ -183,6 +186,34 @@ def convert_functions(tokens:Tokens):
 
     return tokens
 
+
+def convert_operators(tokens:Tokens):
+    """
+    + __add__
+    - __sub__
+    / __div__
+    * __mul__
+    ** __pow__
+    __log__ (for !, &&, and ||)
+    % __mod__
+    & __and__
+    | __or__
+    ~ __not__
+    ^ __xor__
+    () __call__
+    [] __getitem__
+    [] __setitem__
+    == __eq__
+    != __ne__
+    < __lt__
+    <= __le__
+    > __gt__
+    >= __ge__
+    ++ __inc__
+    -- __dec__
+    """
+    # convert operators to function calls
+    return tokens
 
 
 
