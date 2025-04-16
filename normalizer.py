@@ -15,7 +15,9 @@ def normalize(tokens:list[str], filename:str):
     # remove comments
     tokens = remove_comments(tokens)
 
-    # TODO: combine @directives, Int, String, and Float literals into single tokens
+    # TODO RN: Int, String, and Float literals into single tokens
+
+    # TODO: combine @directives
 
     # convert tabs to spaces
     tokens = convert_tabs(tokens)

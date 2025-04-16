@@ -51,15 +51,16 @@ if __name__ == "__main__":
     print(tokens)
 
     # Run through the program and find all possible values of variables at each location in the program (handle constraints and assumes)
+    """
     print("++++++++++++++++++++++++++++++")
     print("Checking constraints...")
     tokens = constrainer.constrain(tokens)
     print(tokens)
-
+    """
     
-    # Figure out how the program will be laid out in memeory
+    # TODO RN: Rearrange the program to be in the correct order
 
-    # Convert the program to C
+    # TODO RN: Convert the program to C
 
 
 

@@ -3,8 +3,6 @@ import blocker
 from tokenize import Token, Tokens
 
 
-
-
 class ClassBlock(blocker.Block):
     """
     class_name = ""
@@ -21,6 +19,8 @@ class ClassBlock(blocker.Block):
         self.extends = extends
         self.access = access
 
+        self.variables = []
+        self.instance_vars = []
         self.operators = []
 
     def __repr__(self):
@@ -41,10 +41,16 @@ class FunctionBlock(blocker.Block):
     def __init__(self, name, args, content, is_api=False, return_type="Void", access="protected"):
         self.name = name
         self.args = args
+        self.arg_types = []
         self.content = content
         self.is_api = is_api
         self.return_type = return_type
         self.access = access
+        self.variables = []
+
+    def get_arg_types(self):
+        # TODO RN: separate the types from the arguments
+        pass
 
     def __repr__(self):
         return f"{self.access} function {self.name} ({self.args}) -> {self.return_type}: {self.content} ENDBLOCK {self.name}"
@@ -97,7 +103,7 @@ def convert_classes(tokens:Tokens):
             
             del block.args[0]
             extensions = []
-            # TODO: instead of expecting exactly one token, get everything between commas
+            # TODO RN: instead of expecting exactly one token, get everything between commas
             if len(block.args) > 0:
                 if block.args[0] != "extends":
                     block.args[0].fatal_error("Expected extends or :")
@@ -161,22 +167,30 @@ def convert_functions(tokens:Tokens):
                 return_type = block.args[2]
             block.args.tokens = []
 
-            # get the function arguments from the inner_args
+            # get the args in a way that does not throw an error with multi-token types
+            argname = None
+            argtype = []
             while block.inner_args is not None and len(block.inner_args) > 0:
-                if len(block.inner_args) == 1 or (len(block.inner_args) != 2 and len(block.inner_args) % 2 != 1):
-                    block.name.fatal_error("Invalid function arguments")
-
-                if len(block.inner_args) == 2:
-                    func_args.append(block.inner_args[0:2])
-                    del block.inner_args[0]
-                    del block.inner_args[0]
-                    break
+                if len(block.inner_args) == 1 or block.inner_args[1] == ",":
+                    argname = block.inner_args[0]
+                elif block.inner_args[0] == ",":
+                    if argname is None or len(argtype) == 0:
+                        block.name.fatal_error("Function has Invalid args")
+                    func_args.append(argtype + [argname])
+                    argname = None
+                    argtype = []
                 else:
-                    func_args.append(block.inner_args[0:2])
-                    del block.inner_args[0]
-                    del block.inner_args[0]
-                    del block.inner_args[0]
+                    argtype.append(block.inner_args[0])
 
+                del block.inner_args[0]
+
+            if argname is not None:
+                if len(argtype) == 0:
+                    block.name.fatal_error("Function has Invalid args")
+                func_args.append(argtype + [argname])
+            else:
+                if len(argtype) != 0:
+                    block.name.fatal_error("Function has Invalid args")
 
             new_block = FunctionBlock(block.name, func_args, block.content, is_api, return_type, block.access)
 

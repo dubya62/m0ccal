@@ -10,6 +10,7 @@ class Block:
         self.args = args
         self.content = content
         self.access = tokenize.Token("protected")
+        self.variables = []
         if len(self.args) > 0 and self.args[0] in ["public", "private", "protected"]:
             self.access = self.args[0]
             del self.args[0]

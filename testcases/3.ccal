@@ -7,15 +7,17 @@ Test1 class extends FOUR:
 
     init:
         let this.value = 2
+        let value2 = 3.14159;
 
     uninit:
         pass
 
 
-    testFunc function(String inputString):
+    testFunc function(String inputString, 4.Test2 inputInt):
         pass
 
 
     __add__ public function(Object other) -> Test1:
         return this.value + other.value
+
 

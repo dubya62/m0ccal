@@ -1,0 +1,25 @@
+
+Beta:
+    Basic syntax and transpilation to C
+    No constraints, assumptions, special @ directives
+    No heavy optimization
+    Just use malloc and no frees for memory management right now
+    Inheritance is allowed
+
+Helpful Error Message Update:
+    Give extremely descriptive error messages and help on errors
+
+Pattern matching update:
+    Add the pattern matching block
+
+Constraint/Assumption update:
+    Trace the value of variables throughout the program and throw constraint errors
+
+Memory optimization update:
+    Use custom malloc and free and statically determine lifetime of variables
+
+Multithreading update:
+    Allow using multiple threads while keeping constraints, assumptions, and memory all safe
+
+
+
