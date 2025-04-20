@@ -11,6 +11,14 @@ class Token:
         print(f"\t{message}")
         exit(1)
 
+    def is_int_literal(self):
+        try:
+            x = int(self.token)
+            return str(x) == self.token
+        except:
+            pass
+        return False
+
     def __hash__(self):
         return self.token.__hash__()
     def __getitem__(self, index):

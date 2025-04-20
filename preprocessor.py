@@ -117,8 +117,11 @@ def handle_import(tokens:tokenize.Tokens, start_path, already_included):
             
     # make imports create sorrounding classes
     while len(original_filename) > 0:
-        result.tokens = [blocker.Block(original_filename[0], tokenize.Tokens([tokenize.Token("protected"), tokenize.Token("class")]), result.tokens)]
-        del original_filename[0]
+        surrounding_name = original_filename[-1]
+        if surrounding_name == ".":
+            surrounding_name = "$DOT_CLASS"
+        result.tokens = [blocker.Block(surrounding_name, tokenize.Tokens([tokenize.Token("public"), tokenize.Token("class")]), result.tokens)]
+        del original_filename[-1]
 
     return result
 

@@ -1,7 +1,11 @@
 
 #import 4
 
+let coolTest = .2.Test();
+
 use FOUR as 4.Test2;
+
+let TestString = "Hello, World!\n";
 
 Test1 class extends FOUR:
 

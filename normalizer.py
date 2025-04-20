@@ -15,8 +15,6 @@ def normalize(tokens:list[str], filename:str):
     # remove comments
     tokens = remove_comments(tokens)
 
-    # TODO RN: Int, String, and Float literals into single tokens
-
     # TODO: combine @directives
 
     # convert tabs to spaces
@@ -36,6 +34,9 @@ def normalize(tokens:list[str], filename:str):
 
     # convert to Token objects
     tokens = convert_to_tokens(tokens, filename)
+
+    # combine Float literals into single tokens
+    tokens = combine_float_literals(tokens)
 
     # remove whitespace
     tokens = remove_whitespace(tokens)
@@ -296,5 +297,18 @@ def normalize_semicolons(tokens:tokenize.Tokens):
                 n -= 1 
         i += 1
 
+    return tokens
+
+
+def combine_float_literals(tokens:tokenize.Tokens):
+    i = 0
+    n = len(tokens)
+    while i + 2 < n:
+        if tokens[i].is_int_literal() and tokens[i+1] == "." and tokens[i+2].is_int_literal():
+            tokens[i].token += tokens[i+1].token + tokens[i+2].token
+            del tokens[i+1]
+            del tokens[i+1]
+            n -= 2
+        i += 1
     return tokens
 

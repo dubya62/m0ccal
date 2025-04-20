@@ -6,7 +6,20 @@ Beta:
     Just use malloc and no frees for memory management right now
     Inheritance is allowed
 
-Helpful Error Message Update:
+FIXME: imported programs can access variables in the main program
+
+Package Manager update:
+    Make an easy way to install packages and compile them into the program
+
+Create Core Library:
+    AssociativeArray
+    DynamicArray
+    Array
+    String
+    Int
+    Float
+
+Helpful Error Message update:
     Give extremely descriptive error messages and help on errors
 
 Pattern matching update:

@@ -41,16 +41,11 @@ class FunctionBlock(blocker.Block):
     def __init__(self, name, args, content, is_api=False, return_type="Void", access="protected"):
         self.name = name
         self.args = args
-        self.arg_types = []
         self.content = content
         self.is_api = is_api
         self.return_type = return_type
         self.access = access
         self.variables = []
-
-    def get_arg_types(self):
-        # TODO RN: separate the types from the arguments
-        pass
 
     def __repr__(self):
         return f"{self.access} function {self.name} ({self.args}) -> {self.return_type}: {self.content} ENDBLOCK {self.name}"
@@ -103,23 +98,27 @@ def convert_classes(tokens:Tokens):
             
             del block.args[0]
             extensions = []
-            # TODO RN: instead of expecting exactly one token, get everything between commas
+
+            # instead of expecting exactly one token, get everything between commas
             if len(block.args) > 0:
                 if block.args[0] != "extends":
                     block.args[0].fatal_error("Expected extends or :")
-                if len(block.args) % 2 == 1:
-                    block.args[0].fatal_error("Expected parent class(es)")
+                if len(block.args) == 1:
+                    block.args[0].fatal_error("Expected type(s) after extends")
                 del block.args[0]
+
+                current_type = []
                 while len(block.args) > 0:
-                    if len(block.args) == 1:
-                        extensions.append(block.args[0])
-                        del block.args[0]
-                        break
-
-                    extensions.append(block.args[0])
-                    del block.args[0]
+                    if block.args[0] == ",":
+                        extensions.append(current_type)
+                        current_type = []
+                    else:
+                        current_type.append(block.args[0])
                     del block.args[0]
 
+                if len(current_type) == 0:
+                    block.name.fatal_error("Invalid extensions to class")
+                extensions.append(current_type)
 
             # convert to special Block
             new_block = ClassBlock(block.name, block.args, block.content, is_api, extensions, block.access)
