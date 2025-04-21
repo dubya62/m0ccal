@@ -1,0 +1,53 @@
+/**
+File manipulation library.
+
+Should allow opening, closing, reading, writing, appending, and any other important file manipulation functionality
+*/
+
+C{
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    typedef struct File{
+        FILE* fp;
+    } File;
+
+    typedef char* String;
+
+    File* open(String filename, String mode){
+        FILE* fp = fopen(filename, mode);
+        File* result = malloc(sizeof(File));
+        result->fp = fp;
+        return result;
+    }
+
+    void close(File* instance){
+        fclose(instance->fp);
+    }
+
+    String read(File* instance, size_t bytes){
+        char* result = malloc(sizeof(char) * bytes + 1);
+        fread(result, sizeof(char), bytes, instance->fp);
+        result[sizeof(char) * bytes] = '\0';
+        return result;
+    }
+}
+
+// using struct should link it to the C struct instead of creating a new one
+// it should not throw an error when using undefined instance variables
+File public struct: 
+    
+    open public function():
+        pass
+
+    close public function():
+        pass
+
+    read public function():
+        pass
+
+    write public function():
+        pass
+
+    truncate public function():
+        pass

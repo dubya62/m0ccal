@@ -1,0 +1,23 @@
+/**
+Getting started on the first m0ccal version of the m0ccal compiler
+Will not be usable until the python version is done
+
+Hopefully creating this program will also require creating some of the core libraries needed for most programs
+*/
+
+#import argparse
+#import file
+
+Compiler public class:
+    compile public function(String filename):
+        pass
+
+
+
+
+// Main code
+let comp = Compiler()
+comp.compile("compiler.ccal")
+
+
+

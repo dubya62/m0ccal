@@ -5,6 +5,7 @@ class Token:
         self.token = token
         self.filename = ""
         self.line_number = 0
+        self.ref = None
 
     def fatal_error(self, message):
         print(f"FATAL ERROR at {self.filename}:{self.line_number}")
@@ -17,6 +18,23 @@ class Token:
             return str(x) == self.token
         except:
             pass
+        return False
+
+    def is_float_literal(self):
+        try:
+            x = float(self.token)
+            return "." in self.token
+        except:
+            pass
+        return False
+
+    def is_literal(self):
+        if len(self.token) > 0 and self.token[0] in ["'", '"']:
+            return True
+        if self.is_int_literal():
+            return True
+        if self.is_float_literal():
+            return True
         return False
 
     def __hash__(self):

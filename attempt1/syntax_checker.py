@@ -18,9 +18,12 @@ def check_syntax(tokens:Tokens):
     # fix the . class to be a special $ class
     fix_dot_classes(tokens)
 
+    # TODO RN: convert operators to function calls
+    convert_operators(tokens)
+
     # TODO: if the class was imported, it cannot access stuff from the global scope
 
-    # TODO RN: Make all references to objects, functions, and states point to their definition
+    # Make all references to objects, functions, and states point to their definition
     parent_node = Graph(None, None)
     create_graph(tokens, parent_node)
     point_references(tokens, parent_node)
@@ -29,7 +32,7 @@ def check_syntax(tokens:Tokens):
         print(graph.data)
         print(graph.children)
         [pgraph(x) for x in graph.children.values()]
-    #pgraph(parent_node)
+    pgraph(parent_node)
 
     # TODO RN: Make calls to class names reference the init function instead
 
@@ -152,22 +155,91 @@ def create_graph(tokens:Tokens, graph:Graph):
 
             if tokens[i] == "#BLOCK":
                 create_graph(tokens[i].content, new_graph)
+                del tokens[i]
+                i -= 1
+                n -= 1
         i += 1
 
 
 def point_references(tokens:Tokens, graph:Graph):
     print(f"Pointing references {graph.data}")
+    builtins = set([
+            "=", "+", "-", "and", "or", "not", "~", "*", "&", "|", "^", "(", ")", ".", ",", "<", ">", "/", "?", "{", "[", "]", "}", "#BLOCK", "let", ";", "this", "return", "continue", "break", "Null"
+        ])
+
     if graph.data == "#BLOCK":
         # point references in the content
         the_block = graph.data
         i = 0
         n = len(the_block.content)
         while i < n:
-            # TODO: somehow find all identifiers for linking
+            # find all identifiers for linking
+            if the_block.content[i] not in builtins and not the_block.content[i].is_literal():
+                print(f"Found non-builtin: {the_block.content[i]}. Linking...")
+                # link it to the correct node
+                # if this is an instance variable, look in the nearest class block's instance variables to link
+                if i - 2 >= 0 and the_block.content[i-1] == "." and the_block.content[i-2] == "this":
+                    print("This is an instance variable")
+                else:
+                    the_ref = find_reference(the_block.content[i], graph)
+                    # if the next token is ., search for the token after starting at this reference's graph
+                    the_block.content[i].ref = the_ref
+                    while i + 2 < n and the_block.content[i+1] == "." and the_ref is not None:
+                        print(f"dotted var: {the_block.content[i+2]}")
+                        if the_block.content[i+2] in the_ref.children:
+                            the_block.content[i+2].ref = the_ref.children[the_block.content[i+2]]
+                            the_ref = the_block.content[i+2].ref
+                            print("Found dot")
+                        else:
+                            print("Unfound dot")
+
+                        i += 2
             i += 1
 
     # point references in all children
     for x in graph.children.values():
         point_references(tokens, x)
 
+
+def find_reference(token:Token, graph:Graph):
+    # given token, find the node in the graph where it is defined
+    print(f"Finding reference to <{token}> in {graph}")
+    if token in graph.children:
+        result = graph.children[token]
+        print(f"Found it (children): {result}")
+        return result
+    elif token == graph.data:
+        result = graph.data
+        print(f"Found it (blockname): {result}")
+        return result
+    else:
+        # it was not found in the current graph. go up 
+        print("Couldn't find it... Going up a node")
+        if graph.parent is None:
+            print("No parent. Failed")
+            return None
+        return find_reference(token, graph.parent)
+
+
+def convert_operators(tokens:Tokens):
+    # TODO RN: convert all operators to function calls
+    """
+    __add__(Object other) 
+    __sub__(Object other)
+    __bool__()
+    __not__()
+    __mul__(Object other)
+    __and__(Object other)
+    __or__(Object other)
+    __xor__(Object other)
+    __lt__(Object other)
+    __gt__(Object other)
+    __le__(Object other)
+    __ge__(Object other)
+    __div__(Object other)
+    __getitem__(Int index)
+    __setitem__(Int index, Object value)
+    """
+    
+    pass
 
