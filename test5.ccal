@@ -1,0 +1,3 @@
+#import ..testDir.testDir2.testFile;
+let this.x = 2;
+printf(super.x);

@@ -1,0 +1,9 @@
+
+private struct testStruct extends TestingClass {
+
+    public function testFunc() { 
+        let this.x = 2 + 3
+        this.x == 2 + testFunc()
+    }
+    
+}

@@ -1,0 +1,16 @@
+// this is a comment!
+let x = 2 +
+3;
+
+use y as x.testFunc();
+if x == 2 {
+    /*
+        multi-line comment
+        */
+    printf(x)
+} elif x < 2 {
+    dontPrint(x);
+    continue;
+} else {
+    return idk();
+}

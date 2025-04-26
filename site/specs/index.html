@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Specs - m0ccal</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">m0ccal</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Welcome to m0ccal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../problems/" class="nav-link">Problems</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Specs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../syntax/" class="nav-link">Syntax</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../unknowns/" class="nav-link">Unknowns</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../problems/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../syntax/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#specs" class="nav-link">Specs</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#implementation" class="nav-link">Implementation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#paradigm" class="nav-link">Paradigm</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#basic-syntax" class="nav-link">Basic Syntax</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#basis" class="nav-link">Basis</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#valid-blocks" class="nav-link">Valid Blocks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#guarantee-motivating-example" class="nav-link">Guarantee motivating example</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#problem-with-guarantee" class="nav-link">Problem with guarantee</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="specs">Specs</h1>
+<h2 id="implementation">Implementation</h2>
+<ul>
+<li>As the name suggests, m0ccal will be implemented simply as a higher-level abstraction of C.<ul>
+<li>This should preserve C's efficiency while allowing better abstraction and modularity</li>
+</ul>
+</li>
+<li>To achieve this, the current plan is to design a transpiler that simply converts m0ccal directly to an efficient C implementation after ensuring the program respects syntax, access specifiers, and guarantees.</li>
+</ul>
+<h2 id="paradigm">Paradigm</h2>
+<ul>
+<li>m0ccal will be a mostly object oriented language where functions are not first-class citizens</li>
+<li>It will be very similar to Java but with slightly less verbose syntax, no generics in the traditional sense, the ability to write statements outside of classes, and not having to put all files in the same directory and name them the same as classes.</li>
+</ul>
+<h2 id="basic-syntax">Basic Syntax</h2>
+<ul>
+<li>Allow unordered programming (can call/access before declared/defined)</li>
+<li>Built-in garbage collection</li>
+<li>Allow public, private, and protected</li>
+<li>Assume static or non static from whether or not a function uses <em>this</em><ul>
+<li>Can only access instance variables using <em>this</em>, but <em>this</em> is never an argument in function headers</li>
+</ul>
+</li>
+<li>Strong, inferred typing using <em>let</em></li>
+<li>Multiple inheritance without generics<ul>
+<li>Everything inherits from Object <ul>
+<li>even Integer, Float, and String</li>
+</ul>
+</li>
+<li>Functions accept their arg types and anything that inherits from their arg types:</li>
+</ul>
+</li>
+</ul>
+<pre><code>class List:
+    function append(Object obj){
+        /*
+            accepts an object of any type since
+            everything inherits from Object
+        */
+    }
+
+    function append(Int int){
+        /*
+            Whichever parent class is the closest to the
+            passed object will be used
+        */
+    }
+</code></pre>
+<h2 id="basis">Basis</h2>
+<ul>
+<li>m0ccal will be based on blocking constructs:</li>
+</ul>
+<pre><code>// pythonic class
+class Test:
+    pass
+     pass
+    pass
+</code></pre>
+<p>and</p>
+<pre><code>// Javic class
+class Test2 {}
+</code></pre>
+<p>should both be valid blocks in m0ccal.</p>
+<ul>
+<li>You should be able to switch between pythonic and Javic syntax<ul>
+<li>Notice that pythonic syntax does not care about indentation changes within a block as long as the indention level of a statement does not fall below the indention level of the first statement in that block</li>
+</ul>
+</li>
+</ul>
+<h2 id="valid-blocks">Valid Blocks</h2>
+<ul>
+<li>class block<ul>
+<li><code>class Test{}</code></li>
+</ul>
+</li>
+<li>function block<ul>
+<li><code>function Test{}</code></li>
+</ul>
+</li>
+<li>C block<ul>
+<li><code>C {}</code><ul>
+<li>Directly inline C code</li>
+<li>Most of the language's complexity is in libraries rather than in the compiler</li>
+<li>It is up to library writers to ensure safety, speed, and platform independence in the core libraries</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>struct block<ul>
+<li><code>struct Test{}</code><ul>
+<li>A class block that does not get translated. Instead assumes that a C block already implements the class using the correct naming standard.</li>
+<li>Allows the compiler to integrate C and m0ccal code seamlessly</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>api block<ul>
+<li><code>api testFunc{}</code><ul>
+<li>A function block that does not get translated. Instead assumes that a C block already implements the function using the correct naming standard.</li>
+<li>Allows the compiler to integrate C and m0ccal code seamlessly</li>
+<li>Should probably design this to where it can have guarantees and assumptions in it</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>testcase block<ul>
+<li><code>|{}</code></li>
+</ul>
+</li>
+<li>debug block<ul>
+<li><code>!{}</code> (LVL 1 debug) </li>
+<li><code>!!{}</code> (LVL 2 debug)</li>
+<li><code>!!!{}</code> (LVL 3 debug)</li>
+<li><code>!!!!{}</code> (LVL 4 debug)</li>
+<li><code>!!!!!{}</code> (LVL 5 debug)</li>
+</ul>
+</li>
+<li>guarantee block<ul>
+<li><code>*{}</code> (moment guarantee)<ul>
+<li>If it is possible for any statement within to evaluate false, throw a compiler error</li>
+</ul>
+</li>
+<li><code>**{}</code> (scope guarantee)<ul>
+<li>For the rest of this scope, if it is possible for any statement within to evaluate false, throw a compiler error</li>
+</ul>
+</li>
+<li><code>***{}</code> (forever guarantee)<ul>
+<li>For the rest of the program, if it is possible for any statement within to evaluate false, throw a compiler error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>assumption block<ul>
+<li><code>~{}</code> (moment assumption)<ul>
+<li>Assume that everything inside this block evaluates to true</li>
+</ul>
+</li>
+<li><code>~~{}</code> (scope assumption)<ul>
+<li>For the rest of this scope, assume that everything inside this block evaluates to true</li>
+</ul>
+</li>
+<li><code>~~~{}</code> (forever assumption)<ul>
+<li>For the rest of the program, assume that everything inside this block evaluates to true</li>
+</ul>
+</li>
+<li><code>&amp;{}</code> (documentation block)<ul>
+<li>Not sure I actually like this idea since there are already comments. Could be documentation that survives being converted to linkable object file or something.</li>
+</ul>
+</li>
+<li>pattern/match<ul>
+<li>An SML-like pattern matching block (match multiple variables at once)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="guarantee-motivating-example">Guarantee motivating example</h2>
+<pre><code>class BankAccount:
+    let this.balance = 0.0
+
+    // guarantee that there is no way 
+    // for anything to cause the balance to
+    // go negative
+
+    ***:
+        this.balance &gt;= 0.0
+</code></pre>
+<ul>
+<li>This syntax is subject to change since one might need to guarantee something about certain indices in an array</li>
+<li>In theory, this makes it impossible to ship out an executable with a bug that allows a negative balance</li>
+</ul>
+<h2 id="problem-with-guarantee">Problem with guarantee</h2>
+<ul>
+<li>If given some functions f(), g(x), and h(x) s.t. g(x) needs the guarantee that h(x) == True, then for the code segment:</li>
+</ul>
+<pre><code>// requires that h(f()) cannot be false
+let result = g(f())
+</code></pre>
+<ul>
+<li>The compiler must be able to prove that f() can only generate output s.t. h(f()) is true</li>
+<li>This is obviously going to be difficult (but not impossible) to write even a decent mathematical proving system just for this feature.<ul>
+<li>In some cases, might run into the halting problem trying to prove by counterexample</li>
+</ul>
+</li>
+<li>Just throw an error if whatever proof system is in place cannot verify the guarantee</li>
+<li>Suggest editing the code to look like this:</li>
+</ul>
+<pre><code>function f(){
+    ...
+    // Assume that the result satisfies h(result) == true
+    ~:
+        h(result)
+}
+function g(Object x){
+    *:
+        h(x)
+    ...
+}
+function h(Object x){
+    ...
+}
+</code></pre>
+<p>or offload the work to runtime like this:</p>
+<pre><code>function f(){
+    ...
+}
+function g(Object x){
+    if h(x):
+        ...
+    else:
+        // put code here to handle when constraint fails
+}
+function h(Object x){
+    ...
+}
+</code></pre>
+<ul>
+<li>The assumption block defeats the purpose of the guarantee block in cases where the proof system cannot prove the guarantee stands implicitly (hurts the safety of the program)</li>
+<li>As a best practice, you should only make assumptions when you are absolutely certain it is true <ul>
+<li>For example: f = generate prime from sieve, h = isprime, and g is a function that requires a prime number. It is safe to assume that f() will only generate numbers x such that isprime(x) == true</li>
+</ul>
+</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
